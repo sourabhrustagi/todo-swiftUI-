@@ -9,6 +9,8 @@ import SwiftUI
 
 struct TodoListView: View {
     @StateObject var viewModel: TodoViewModel
+    @State private var showAlert = false
+    @State private var todoToDelete: Todo?
     
     var body: some View {
         NavigationView{
@@ -27,19 +29,31 @@ struct TodoListView: View {
                 }
                 List {
                     ForEach(viewModel.todos){todo in
-                        HStack{
                             Text(todo.title)
-                            Spacer()
-                            Button(action: {
-                                viewModel.deleteTodoById(todo.id)
-                            }) {
-                                Image(systemName: "trash")
-                                    .foregroundColor(.red)
-                            }
-                        }
-                    }
+                    }.onDelete(perform: deleteTodo)
                 }
-            }.navigationBarTitle("To-Do List")
+            }
+            .navigationBarTitle("To-Do List")
+            .alert(isPresented: $showAlert){
+                    Alert(
+                        title: Text("Delete To-Do"),
+                        message: Text("Are you sure you want to delete this item?"),
+                        primaryButton: .destructive(Text("Delete")){
+                            if let todo = todoToDelete{
+                                viewModel.deleteTodoById(todo.id)
+                            }
+                        },
+                        secondaryButton: .cancel()
+                    )
+            }
+            
+        }
+    }
+    
+    private func deleteTodo(at offsets: IndexSet){
+        offsets.forEach{ index in
+            todoToDelete = viewModel.todos[index]
+            showAlert = true
         }
     }
 }
