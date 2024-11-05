@@ -15,7 +15,6 @@ class AddTodoUseCase{
     }
     
     func execute(title: String){
-        let newTodo = Todo(id: UUID(), title: title, isCompleted: false)
-        repository.addTodo(newTodo)
+        repository.addTodo(title:title)
     }
 }

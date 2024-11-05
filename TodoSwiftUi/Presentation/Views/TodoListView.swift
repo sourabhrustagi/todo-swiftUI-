@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TodoListView: View {
-    @StateObject var viewModel: TodoViewModel
+    @StateObject var viewModel: TodoViewModel = DiContainer.shared.container.resolve(TodoViewModel.self)!
     @State private var showAlert = false
     @State private var todoToDelete: Todo?
     

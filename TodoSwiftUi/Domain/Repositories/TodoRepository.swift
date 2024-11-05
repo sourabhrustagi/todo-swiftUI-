@@ -8,7 +8,7 @@
 import Foundation
 
 protocol TodoRepository{
-    func addTodo(_ todo: Todo)
+    func addTodo(title: String)
     func fetchTodos() -> [Todo]
     func deleteTodoById(_ id: UUID)
 }
